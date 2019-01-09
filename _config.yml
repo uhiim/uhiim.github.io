@@ -12,7 +12,6 @@ disqus_name: "" # disqus username (comments)
 
 # Where things are
 source:       .
-destination:  ./_site
 plugins_dir:  _plugins
 layouts_dir:  _layouts
 data_dir:     _data
