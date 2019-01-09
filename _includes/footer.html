@@ -1,0 +1,155 @@
+<footer class="page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col l4 s12">
+                <h5 class="white-text">What is a comic</h5>
+                <p class="grey-text text-lighten-4">Comics is a medium used to express ideas by images, often combined with text or other visual information.</p>
+            </div>
+            <div class="col l4 s12" style="overflow: hidden;">
+                <h5 class="white-text">Powered</h5>
+                <ul class="grey-text text-lighten-4">
+                    <li>Cloudflare (Content Delivery Network)</li>
+                    <li>Freenom (Domain Names)</li>
+                    <li>Github (File Hosting)</li>
+                </ul>
+            </div>
+            <div class="col l4 s12">
+                <h5 class="white-text">Designed</h5>
+                <ul class="grey-text text-lighten-4">
+                    <li>CSS3 - HTML5 - jQuery</li>
+                    <li>Material Design Framework</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            © 1996-2017 {{site.title}}, All rights reserved.
+            <span class="grey-text text-lighten-4 right">TK</span>
+        </div>
+    </div>
+</footer>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "name": "{% if page.title %}{{ page.title | escape }} - {{ site.title }}{% else %}{{ site.title | escape }}{% endif %}",
+  "alternateName": "{% if page.title %}{{ page.title | escape }} - {{ site.title }}{% else %}{{ site.title | escape }}{% endif %}",
+  "url": "{{ page.url | replace:'index.html','' | absolute_url }}"
+}
+
+</script>
+<!--  Scripts-->
+<script src="{{ '/assets/js/jszip.js' | absolute_url }}"></script>
+<script src="{{ '/assets/js/jszip-utils.js' | absolute_url }}"></script>
+<script src="{{ '/assets/js/jquery-2.1.4.min.js' | absolute_url }}"></script>
+<script>
+if (!window.jQuery) {
+    document.write('<script src="/assets/bin/jquery-2.1.1.min.js"><\/script>');
+}
+</script>
+<script src="{{ '/assets/js/jquery.timeago.min.js' | absolute_url }}"></script>
+<script src="{{ '/assets/js/prism.js' | absolute_url }}"></script>
+<script src="{{ '/assets/jade/lunr.min.js' | absolute_url }}"></script>
+<script src="{{ '/assets/jade/search.js' | absolute_url }}"></script>
+<script src="{{ '/assets/bin/materialize.js' | absolute_url }}"></script>
+<script src="{{ '/assets/js/jquery.lazyload.min.js' | absolute_url }}"></script>
+<script src="{{ '/assets/js/FileSaver.js' | absolute_url }}"></script>
+<script type="text/javascript">
+jQuery(function($) {
+    "use strict";
+
+    var Promise = window.Promise;
+    if (!Promise) {
+        Promise = JSZip.external.Promise;
+    }
+
+    /**
+     * Reset the message.
+     */
+    function resetMessage() {
+        $("#this-status")
+            .text("");
+    }
+    /**
+     * show a successful message.
+     * @param {String} text the text to show.
+     */
+    function showMessage(text) {
+        resetMessage();
+        $("#this-status")
+            .text(text);
+    }
+    /**
+     * show an error message.
+     * @param {String} text the text to show.
+     */
+    function showError(text) {
+        resetMessage();
+        $("#this-status")
+            .text(text);
+    }
+
+    /**
+     * Fetch the content and return the associated promise.
+     * @param {String} url the url of the content to fetch.
+     * @return {Promise} the promise containing the data.
+     */
+    function urlToPromise(url) {
+        return new Promise(function(resolve, reject) {
+            JSZipUtils.getBinaryContent(url, function(err, data) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
+    if (!JSZip.support.blob) {
+        showError("This demo works only with a recent browser !");
+        return;
+    }
+
+    var $form = $("#download_form").on("submit", function() {
+
+        resetMessage();
+
+        var zip = new JSZip();
+
+        zip.file("{{site.title}}.url", "http://{{site.url}}");
+        // find every checked item
+        $(this).find(":checked").each(function() {
+            var $this = $(this);
+            var url = $this.data("url");
+            var filename = url.replace(/.*\//g, "");
+            zip.file(filename, urlToPromise(url), {
+                binary: true
+            });
+        });
+
+        // when everything has been downloaded, we can trigger the dl
+        zip.generateAsync({
+                type: "blob"
+            }, function updateCallback(metadata) {
+                var msg = "progression : " + metadata.percent.toFixed(2) + " %";
+                showMessage(msg);
+            })
+            .then(function callback(blob) {
+
+                // see FileSaver.js
+                saveAs(blob, "{{page.title}}");
+
+                showMessage("The image was successfully downloaded.");
+            }, function(e) {
+                showError(e);
+            });
+
+        return false;
+    });
+});
+
+// vim: set shiftwidth=4 softtabstop=4:
+</script>
+<script src="{{ '/assets/js/init.js' | absolute_url }}"></script>

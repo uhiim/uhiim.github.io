@@ -1,0 +1,95 @@
+--- 
+layout: default 
+---
+<div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+        <h1 class="header center-on-small-only">{{site.title}}</h1>
+        <div class='row center'>
+            <h4 class="header col s12 light center">Various stories with different thoughts, make you not bored to read his essay.</h4>
+        </div>
+        <div class="row center">
+            <a class="red-text text-lighten-4" href="{{site.cdn}}">{{site.url}}</a>
+        </div>
+    </div>
+    <!-- Section -->
+    <div class="col s12">
+        <ul class="tabs tabs-fixed-width">
+            <li class="tab col s3"><a href="#cardpost">Recent</a></li>
+            {% for archive in site.categories %}
+            <li class="tab col s3"><a href="#{{ archive | first | remove:' ' }}">{{ archive | first | replace:'-',' ' }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- EndSection -->
+</div>
+<div class="container">
+    <div class="section">
+        <div class="row" id="cardpost">
+            {% for post in paginator.posts %}
+            <div class="col s12 m6 l4">
+                <div class="card">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="activator" src="{{post.image}}" alt="{{post.title}}">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title activator grey-text text-darken-4">Chapter {{post.chapter}}<i class="material-icons right">more_vert</i></span>
+                        <p><a href="{{site.url}}{{post.url}}">{{post.tags | first | replace:'-',' '}}</a></p>
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4"><a href="{{site.url}}{{post.url}}">Readmore</a><i class="material-icons right">close</i></span>
+                        <div class="divider"></div>
+                        <p>{{post.synopsis | truncate: 100}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- Section -->
+            <div class="col s12">
+                {% if paginator.total_pages > 1 %}
+                <ul class="pagination center">
+                    {% if paginator.previous_page %}
+                    <li class="disabled"><a href="{{site.url}}{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}"><i class="material-icons">chevron_left</i></a></li>
+                    {% else %}
+                    <li class="disabled"><span><i class="material-icons">chevron_left</i></span></li>
+                    {% endif %} {% for page in (1..paginator.total_pages) %} {% if page == paginator.page %}
+                    <li class="active"><a>{{ page }}</a></li>
+                    {% elsif page == 1 %}
+                    <li class="waves-effect"><a href="{{site.url}}{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a></li>
+                    {% else %}
+                    <li class="waves-effect"><a href="{{site.url}}{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a></li>
+                    {% endif %} {% endfor %} {% if paginator.next_page %}
+                    <li class="waves-effect"><a href="{{site.url}}{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}"><i class="material-icons">chevron_right</i></a></li>
+                    {% else %}
+                    <li class="disabled"><span><i class="material-icons">chevron_right</i></span></li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+            </div>
+            <!-- EndSection -->
+        </div>
+        <!-- Section -->
+        {% for archive in site.categories %}
+        <div class="row" id="{{ archive | first | remove:' ' }}">
+            {% for posts in archive %} {% for post in posts limit:6 %} {% if post.url %}
+            <div class="col s12 m6 l4">
+                <div class="card">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="activator" src="{{post.image}}" alt="{{post.title}}">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title activator grey-text text-darken-4">Chapter {{post.chapter}}<i class="material-icons right">more_vert</i></span>
+                        <p><a href="{{site.url}}{{post.url}}">{{post.tags | first | replace:'-',' '}}</a></p>
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4"><a href="{{site.url}}{{post.url}}">Readmore</a><i class="material-icons right">close</i></span>
+                        <div class="divider"></div>
+                        <p>{{post.synopsis | truncate: 100}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %} {% endfor %} {% endfor %}
+        </div>
+        {% endfor %}
+        <!-- EndSection -->
+    </div>
+</div>

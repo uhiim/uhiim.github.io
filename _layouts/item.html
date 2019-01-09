@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+{% include head.html %}
+
+<body>
+    <header>
+        <nav class="top-nav">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <a class="page-title">Chapter {{ page.chapter | escape }}</a>
+                </div>
+            </div>
+        </nav>
+        {% include header.html %}
+        <div class="github-commit">
+            <div class="container">
+                <div class="commit">
+                    {{page.tags | first | replace:'-',' '}}
+                    <a id="github-button" class="btn-flat right grey-text text-lighten-5 waves-effect waves-light hide-on-small-only" href="#disqus_thread">Comment</a>
+                    <script id="dsq-count-scr" src="https://penyimpanan-tk.disqus.com/count.js" async></script>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m9 l10">
+                    {{ content }}
+                    <!--  Section  -->
+                    <div id="synopsis" class="section scrollspy">
+                        <blockquote id="this-status">{{page.synopsis | truncate: 100}}</blockquote>
+                    </div>
+                    <!-- End section -->
+                    <!--  Section  -->
+                    <form action="#" id="download_form" style="display: none;">
+                        {% for image in site.static_files %} {% if image.path contains page.href %}
+                        <label>
+                            <input type="checkbox" data-url="{{ site.url }}{{ image.path }}" checked /> {{ image.file.name }}
+                        </label>
+                        {% endif %} {% endfor %}
+                        <button id="dl-image" type="submit" class="btn btn-primary">Frame</button>
+                    </form>
+                    <!-- End section -->
+                    <!--  Section  -->
+                    <div id="reader" class="section scrollspy">
+                        {% for image in site.static_files %} {% if image.path contains page.href %}
+                        <img class="lazy responsive-img" alt="{{image.name}}" data-original="{{ site.url }}{{ image.path }}" style="width:100%" /> {% endif %} {% endfor %}
+                    </div>
+                    <!-- End section -->
+                    <div class="divider"></div>
+                    {% if site.disqus_name %} {% include disqus.html %} {% endif %}
+                </div>
+                <div class="col hide-on-small-only m3 l2">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents">
+                                <li>
+                                    <a href="#synopsis">Synopsis</a>
+                                </li>
+                                <li>
+                                    <a href="#reader">Read comic</a>
+                                </li>
+                                <li>
+                                    <a href="#share" class='dropdown-button' data-activates='dropdown1'>Share to friends</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dropdown Structure -->
+                <ul id='dropdown1' class='dropdown-content'>
+                    <li><a href="mailto:?Subject={{page.title}}&amp;Body=Read now on {{site.url}}{{page.url}}">Email</a></li>
+                    <li class="divider"></li>
+                    <li><a href="http://www.digg.com/submit?url={{site.url}}{{page.url}}" target="_blank">Digg</a></li>
+                    <li class="divider"></li>
+                    <li><a href="http://www.facebook.com/sharer.php?u={{site.url}}{{page.url}}" target="_blank">Facebook</a></li>
+                    <li class="divider"></li>
+                    <li><a href="https://plus.google.com/share?url={{site.url}}{{page.url}}" target="_blank">Google+</a></li>
+                    <li class="divider"></li>
+                    <li><a href="https://twitter.com/share?url={{site.url}}{{page.url}}&amp;hashtags={{site.title | uri_escape}}" target="_blank">Twitter</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "NewsArticle",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://google.com/article"
+        },
+        "headline": "{{page.title}}",
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{site.url}}{{page.image}}",
+            "height": 800,
+            "width": 800
+        },
+        "datePublished": "{{ page.date | date_to_xmlschema }}",
+        "dateModified": "{{ page.date | date_to_xmlschema }}",
+        "author": {
+            "@type": "Person",
+            "name": "{{site.author}}"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "{{site.title}}",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{site.logo | absolute_url}}",
+                "width": 600,
+                "height": 60
+            }
+        },
+        "description": "{{page.synopsis}}"
+    }
+    </script>
+    {% include footer.html %}
+</body>
+
+</html>

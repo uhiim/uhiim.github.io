@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+{% include head.html %}
+
+<body>
+    <header>
+        <nav class="top-nav">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <a class="page-title">{{ page.title | escape }}</a>
+                </div>
+            </div>
+        </nav>
+        {% include header.html %}
+    </header>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m9 l10">
+                    <!--  Section  -->
+                    <div id="synopsis" class="section scrollspy">
+                        <blockquote>{{page.description}}</blockquote>
+                    </div>
+                    <!-- End section -->
+                    <!--  Section  -->
+                    <div id="reader" class="section scrollspy">
+                        {{ content }}
+                    </div>
+                    <!-- End section -->
+                    <div class="divider"></div>
+                </div>
+                <div class="col hide-on-small-only m3 l2">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents">
+                                <li>
+                                    <a href="#synopsis">Description</a>
+                                </li>
+                                <li>
+                                    <a href="#reader">Content</a>
+                                </li>
+                                <li>
+                                    <a href='#share' class='dropdown-button' data-activates='dropdown1'>Share to friends</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dropdown Structure -->
+                <ul id='dropdown1' class='dropdown-content'>
+                    <li><a href="mailto:?Subject={{page.title}}&amp;Body=Read now on {{site.url}}{{page.url}}">Email</a></li>
+                    <li class="divider"></li>
+                    <li><a href="http://www.digg.com/submit?url={{site.url}}{{page.url}}" target="_blank">Digg</a></li>
+                    <li class="divider"></li>
+                    <li><a href="http://www.facebook.com/sharer.php?u={{site.url}}{{page.url}}" target="_blank">Facebook</a></li>
+                    <li class="divider"></li>
+                    <li><a href="https://plus.google.com/share?url={{site.url}}{{page.url}}" target="_blank">Google+</a></li>
+                    <li class="divider"></li>
+                    <li><a href="https://twitter.com/share?url={{site.url}}{{page.url}}&amp;hashtags={{site.title | uri_escape}}" target="_blank">Twitter</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    {% include footer.html %}
+</body>
+
+</html>

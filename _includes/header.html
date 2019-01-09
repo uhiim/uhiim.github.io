@@ -1,0 +1,35 @@
+<div class="container">
+    <a data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only">
+        <i class="material-icons">menu</i>
+    </a>
+</div>
+<ul id="nav-mobile" class="side-nav fixed">
+    <li class="logo">
+        <a id="logo-container" href="{{site.url}}" class="brand-logo">
+            <object id="front-page-logo" type="image/svg+xml" data="{{site.url}}/assets/res/materialize.svg">Your browser does not support SVG</object>
+        </a>
+    </li>
+    <li class="divider"></li>
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+            <li class="bold active">
+                <a class="collapsible-header  waves-effect waves-teal active">Homepage</a>
+                <div class="collapsible-body" style="display: block;">
+                    <ul>
+                        <li class="active">
+                            <a class="waves-effect waves-teal">About Us</a>
+                        </li>
+                        {% for menupages in site.pages %} {% if menupages.title %}
+                        <li>
+                            <a href="{{site.url}}{{ menupages.url }}" class="waves-effect waves-teal">{{ menupages.title }}</a>
+                        </li>
+                        {% endif %} {% endfor %}
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <li class="bold">
+        <a id="this-chapter" class="waves-effect waves-teal">Download <span class="new badge" data-badge-caption="chapter">this</span></a>
+    </li>
+</ul>
